@@ -32,4 +32,23 @@ notes.post('/notes', (req, res) => {
     }
 });
 
+notes.delete('/notes/:id', (req, res) => {
+    console.info(`${req.method} request received to delete a not`);
+
+    let tempDB = []
+    db.forEach(note => {
+        if(note.id != req.params.id){
+            tempDB.push(note)
+        }
+    })
+
+        db = tempDB
+
+        fs.writeFileSync('./db/db.json',JSON.stringify(db),function(err){
+            if(err) console.error(err)
+        });
+        res.json(db);
+
+});
+
 module.exports = notes;
